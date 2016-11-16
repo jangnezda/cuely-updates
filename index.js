@@ -5,6 +5,7 @@ const path = require('path');
 const app = express();
 const request = require('request');
 const isDevelopment = process.env.NODE_ENV === 'development';
+const s3BucketUrl = 'https://s3-eu-west-1.amazonaws.com/updates.cuely.co';
 
 var version;
 // Fetch manifest info every 5 minutes
@@ -13,7 +14,7 @@ const FETCH_INTERVAL = 300000;
 app.use(require('morgan')('dev'));
 
 if (isDevelopment) {
-  app.use('/updates/latest', express.static(path.join(__dirname, 'updates/latest')));
+  app.use('/releases', express.static(path.join(__dirname, 'releases')));
 }
 
 app.get('/updates/latest', (req, res) => {
@@ -24,7 +25,7 @@ app.get('/updates/latest', (req, res) => {
       res.status(204).end();
     } else {
       res.json({
-        url: `${getBaseUrl()}/updates/latest/osx/cuely-${version}-osx.zip`
+        url: `${getBaseUrl()}/releases/osx/cuely-${version}-osx.zip`
       });
     }
   } else {
@@ -36,12 +37,12 @@ let getBaseUrl = () => {
   if (isDevelopment) {
     return 'http://localhost:5123';
   } else {
-    return 'http://eatodo.s3.amazonaws.com'
+    return s3BucketUrl;
   }
 }
 
 let getLatestRelease = () => {
-  const dir = `${__dirname}/updates/latest/osx`;
+  const dir = `${__dirname}/releases/osx`;
 
   const versionsDesc = fs.readdirSync(dir).filter(file => file.endsWith('.zip')).map(file => file.split('-')[1]).reverse();
   return versionsDesc[0];
@@ -66,7 +67,7 @@ let getVersion = () => {
   setTimeout(getVersion, FETCH_INTERVAL);
 }
 
-const versionUrl = `${getBaseUrl()}/updates/latest/osx/VERSION`;
+const versionUrl = `${getBaseUrl()}/releases/osx/VERSION`;
 getVersion();
 
 app.listen(process.env.PORT, () => {
