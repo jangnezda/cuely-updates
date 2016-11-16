@@ -4,8 +4,8 @@
   "description": "Update server for distributing automatic updates for Cuely app.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "NODE_ENV='development' PORT=3000 npm run start",
+    "start": "PORT=5123 node index.js",
+    "dev": "NODE_ENV='development' npm run start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

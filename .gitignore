@@ -42,7 +42,7 @@ jspm_packages
 
 # builds
 dist
-Cuely-*
+updates
 
 # Mac stuff
 .DS_Store
