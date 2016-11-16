@@ -1,0 +1,29 @@
+{
+  "name": "cuely-updates",
+  "version": "1.0.0",
+  "description": "Update server for distributing automatic updates for Cuely app.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "NODE_ENV='development' PORT=3000 npm run start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pipetop/cuely-updates.git"
+  },
+  "keywords": [
+    "electron",
+    "angular",
+    "update"
+  ],
+  "author": "Pipetop Aps",
+  "bugs": {
+    "url": "https://github.com/pipetop/cuely-updates/issues"
+  },
+  "dependencies": {
+    "express": "^4.13.4",
+    "morgan": "^1.7.0",
+    "request": "^2.72.0"
+  }
+}
