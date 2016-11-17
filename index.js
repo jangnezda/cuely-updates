@@ -17,6 +17,12 @@ if (isDevelopment) {
   app.use('/releases', express.static(path.join(__dirname, 'releases')));
 }
 
+app.get('/ping', (req, res) => {
+  res.json({
+    status: 'OK'
+  });
+});
+
 app.get('/updates/latest', (req, res) => {
   if (version) {
     const clientVersion = req.query.v;
@@ -51,19 +57,21 @@ let getLatestRelease = () => {
 let getVersion = () => {
   if (isDevelopment) {
     version = getLatestRelease();
+    console.log("Latest version is:", version);
   } else {
     console.log(`Fetching latest version from ${versionUrl}`);
-    request.get(versionUrl, function (error, response, body) {
-      if (!error && response.statusCode == 200) {
-        version = body;
+    request.get(versionUrl, (error, response, body) => {
+      if (error) {
+         console.error(error);
+        return;
       }
-      else if (error) {
-        console.error(error);
+      if (response.statusCode == 200) {
+        version = body.trim();
+        console.log("Latest version is:", version);
       }
     });
   }
 
-  console.log("Latest version is:", version);
   setTimeout(getVersion, FETCH_INTERVAL);
 }
 
